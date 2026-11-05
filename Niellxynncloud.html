@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Adhisa Seza Novarini 🤍</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Sacramento&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --bg-dark: #0a0e17;
+            --bg-card: rgba(23, 31, 46, 0.85);
+            --steel-blue: #4682b4;
+            --steel-glow: rgba(70, 130, 180, 0.4);
+            --accent-pink: #ffb7c5;
+            --text-main: #f0f4f8;
+            --text-sub: #94a3b8;
+            --polaroid-bg: #1e293b;
+            --polaroid-text: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: radial-gradient(circle at top center, #1e293b 0%, #0a0e17 85%);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            padding-bottom: 110px; /* Space for floating player */
+        }
+
+        /* Floating Background Particles */
+        .hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .heart-particle {
+            position: absolute;
+            color: var(--steel-blue);
+            opacity: 0.35;
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) scale(0.5) rotate(0deg);
+                opacity: 0;
+            }
+            20% { opacity: 0.5; }
+            80% { opacity: 0.5; }
+            100% {
+                transform: translateY(-10vh) scale(1.2) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Screens Manager */
+        .screen {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            padding: 20px;
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
+            background: radial-gradient(circle at center, #1e293b 0%, #0a0e17 100%);
+        }
+
+        .screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* 1. Passcode Screen */
+        .card-box {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(70, 130, 180, 0.3);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px var(--steel-glow);
+            border-radius: 24px;
+            padding: 35px 25px;
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+        }
+
+        .card-icon {
+            font-size: 2.8rem;
+            margin-bottom: 12px;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .card-sub {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            margin-bottom: 22px;
+        }
+
+        .passcode-inputs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .pin-digit {
+            width: 48px;
+            height: 56px;
+            border-radius: 14px;
+            border: 1.5px solid rgba(70, 130, 180, 0.4);
+            background: rgba(10, 14, 23, 0.7);
+            color: var(--steel-blue);
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .pin-digit:focus {
+            border-color: var(--steel-blue);
+            box-shadow: 0 0 15px var(--steel-glow);
+            transform: translateY(-2px);
+        }
+
+        .btn-action {
+            background: linear-gradient(135deg, #4682b4 0%, #2b547e 100%);
+            color: #ffffff;
+            font-weight: 700;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 50px;
+            width: 100%;
+            font-size: 0.95rem;
+            cursor: pointer;
+            box-shadow: 0 8px 20px var(--steel-glow);
+            transition: all 0.3s;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(70, 130, 180, 0.6);
+        }
+
+        .clue-btn {
+            background: none;
+            border: none;
+            color: var(--text-sub);
+            opacity: 0.8;
+            font-size: 0.8rem;
+            margin-top: 15px;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        /* 2. Welcome Message Modal */
+        .welcome-modal {
+            max-width: 420px;
+        }
+
+        .welcome-text {
+            font-size: 0.95rem;
+            color: var(--text-sub);
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .welcome-sender {
+            font-family: 'Sacramento', cursive;
+            font-size: 2.2rem;
+            color: var(--steel-blue);
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        /* 3. Pink Scale Countdown */
+        .countdown-number {
+            font-size: 8rem;
+            font-weight: 800;
+            color: var(--accent-pink);
+            text-shadow: 0 0 40px rgba(255, 183, 197, 0.5), 0 0 80px rgba(255, 183, 197, 0.3);
+            animation: pinkScale 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275) infinite;
+        }
+
+        @keyframes pinkScale {
+            0% {
+                transform: scale(0.2);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.15);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0.9;
+            }
+        }
+
+        /* Main Content Container */
+        #mainContent {
+            position: relative;
+            z-index: 5;
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 30px 20px 40px;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        #mainContent.visible {
+            opacity: 1;
+        }
+
+        /* Header Date & Title */
+        .header-box {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .date-badge {
+            display: inline-block;
+            background: rgba(70, 130, 180, 0.15);
+            border: 1px solid rgba(70, 130, 180, 0.3);
+            color: var(--steel-blue);
+            padding: 6px 18px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .main-title {
+            font-family: 'Sacramento', cursive;
+            font-size: 3.2rem;
+            color: var(--steel-blue);
+            text-shadow: 0 0 20px var(--steel-glow);
+            line-height: 1.2;
+            margin-bottom: 6px;
+        }
+
+        .sub-title {
+            font-size: 0.9rem;
+            color: var(--text-sub);
+            font-weight: 300;
+        }
+
+        /* FLOATING SPOTIFY PLAYER WIDGET (Melayang di Bawah Screen) */
+        .floating-spotify-card {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 520px;
+            background: rgba(15, 23, 42, 0.92);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(70, 130, 180, 0.4);
+            border-radius: 50px;
+            padding: 10px 18px;
+            z-index: 90;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.8), 0 0 20px var(--steel-glow);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .spotify-album-cover {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1.5px solid var(--steel-blue);
+            animation: spinCover 12s linear infinite;
+            animation-play-state: paused;
+        }
+
+        .spotify-album-cover.playing {
+            animation-play-state: running;
+        }
+
+        @keyframes spinCover {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .spotify-info {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .spotify-track-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .spotify-artist {
+            font-size: 0.72rem;
+            color: var(--text-sub);
+        }
+
+        .spotify-controls-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .playlist-select {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(70, 130, 180, 0.3);
+            color: var(--steel-blue);
+            font-size: 0.75rem;
+            outline: none;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 20px;
+        }
+
+        .playlist-select option {
+            background: #0a0e17;
+            color: var(--text-main);
+        }
+
+        .play-btn-circle {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--steel-blue);
+            color: #ffffff;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 12px var(--steel-glow);
+            transition: transform 0.2s;
+        }
+
+        .play-btn-circle:active {
+            transform: scale(0.92);
+        }
+
+        /* Quotes Section */
+        .quote-banner {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 0 15px;
+        }
+
+        .quote-text {
+            font-family: 'Caveat', cursive;
+            font-size: 1.45rem;
+            color: var(--steel-blue);
+            line-height: 1.5;
+            letter-spacing: 0.5px;
+        }
+
+        /* Tilted Polaroid Gallery Feed */
+        .gallery-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .polaroid-card {
+            background: var(--polaroid-bg);
+            border: 1px solid rgba(70, 130, 180, 0.2);
+            padding: 14px 14px 22px 14px;
+            border-radius: 8px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            position: relative;
+            transition: transform 0.4s ease;
+        }
+
+        /* Polaroid Tilts (Miring) */
+        .polaroid-card:nth-child(odd) {
+            transform: rotate(-2.5deg);
+        }
+
+        .polaroid-card:nth-child(even) {
+            transform: rotate(2.5deg);
+        }
+
+        .polaroid-card:hover {
+            transform: rotate(0deg) scale(1.02);
+            z-index: 5;
+        }
+
+        /* Washi Tape Accent */
+        .polaroid-card::before {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-1deg);
+            width: 90px;
+            height: 24px;
+            background: rgba(70, 130, 180, 0.6);
+            backdrop-filter: blur(2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            z-index: 2;
+        }
+
+        .polaroid-media {
+            width: 100%;
+            height: 360px;
+            object-fit: cover;
+            border-radius: 4px;
+            background: #000;
+            display: block;
+        }
+
+        .polaroid-caption {
+            margin-top: 18px;
+            padding: 0 8px;
+            text-align: center;
+        }
+
+        .caption-text {
+            font-family: 'Caveat', cursive;
+            font-size: 1.35rem;
+            color: var(--polaroid-text);
+            line-height: 1.4;
+        }
+
+        /* Video Showcase Section */
+        .video-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-bottom: 45px;
+        }
+
+        .video-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(70, 130, 180, 0.3);
+            border-radius: 20px;
+            padding: 16px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+        }
+
+        .video-title {
+            font-size: 0.9rem;
+            color: var(--steel-blue);
+            margin-bottom: 12px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .video-element {
+            width: 100%;
+            border-radius: 12px;
+            outline: none;
+            background: #000;
+            max-height: 400px;
+        }
+
+        /* Final Romantic Message Footer */
+        .final-message-box {
+            background: rgba(70, 130, 180, 0.08);
+            border: 1px dashed rgba(70, 130, 180, 0.4);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .final-message-text {
+            font-family: 'Caveat', cursive;
+            font-size: 1.5rem;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Watermark */
+        .watermark {
+            text-align: center;
+            font-size: 0.78rem;
+            color: var(--text-sub);
+            opacity: 0.7;
+            letter-spacing: 0.5px;
+            padding-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .watermark a {
+            color: var(--steel-blue);
+            text-decoration: none;
+        }
+
+        /* Hidden Audio Elements */
+        audio { display: none; }
+    </style>
+</head>
+<body>
+
+    <!-- Floating Background Particles -->
+    <div class="hearts-container" id="heartsContainer"></div>
+
+    <!-- Hidden Audio Elements for Spotify Player -->
+    <audio id="audio1" loop preload="auto">
+        <source src="https://ganga--link--ghhzdp9sv8hk.code.run/i/ahh5pivf.mp4" type="audio/mp4">
+    </audio>
+    <audio id="audio2" loop preload="auto">
+        <source src="https://ganga--link--ghhzdp9sv8hk.code.run/i/w42x2lj0.mp4" type="audio/mp4">
+    </audio>
+    <audio id="audio3" loop preload="auto">
+        <source src="https://ganga--link--ghhzdp9sv8hk.code.run/i/4fl9jaos.mp4" type="audio/mp4">
+    </audio>
+
+    <!-- STEP 1: Passcode Lock Screen -->
+    <div class="screen" id="passcodeScreen">
+        <div class="card-box">
+            <span class="card-icon">🔒</span>
+            <h2 class="card-title">Masukkan Password</h2>
+            <p class="card-sub">Ketik kode rahasia untuk membuka pesan ucapan ini</p>
+            <div class="passcode-inputs">
+                <input type="password" maxlength="1" class="pin-digit" autofocus>
+                <input type="password" maxlength="1" class="pin-digit">
+                <input type="password" maxlength="1" class="pin-digit">
+            </div>
+            <button class="btn-action" onclick="checkPasscode()">Buka Kunci ✨</button>
+            <button class="clue-btn" onclick="showClue()">Butuh Clue?</button>
+        </div>
+    </div>
+
+    <!-- STEP 2: Welcome Message Popup -->
+    <div class="screen hidden" id="welcomeScreen">
+        <div class="card-box welcome-modal">
+            <span class="card-icon">💌</span>
+            <h2 class="card-title">Pesan Spesial Hari Ini</h2>
+            <p class="welcome-text">
+                "Ada sebuah kejutan kecil yang disiapkan khusus untuk menyambut hari bertambahnya usiamu..."
+            </p>
+            <span class="welcome-sender">Dari Mas Adnan</span>
+            <button class="btn-action" onclick="startCountdownSequence()">Lanjutkan ❤️</button>
+        </div>
+    </div>
+
+    <!-- STEP 3: Pink Scale Countdown (1 - 2 - 3) -->
+    <div class="screen hidden" id="countdownScreen">
+        <div class="countdown-number" id="countdownNumber">1</div>
+    </div>
+
+    <!-- STEP 4: Main Content Area -->
+    <div id="mainContent">
+
+        <!-- Header -->
+        <header class="header-box">
+            <div class="date-badge">📅 6 November 2026</div>
+            <h1 class="main-title">Happy Birthday Adhisa Seza Novarini 🤍</h1>
+            <p class="sub-title">Selamat bertambah usia, sayangku cintaku semestaku!</p>
+        </header>
+
+        <!-- Quote Intro Banner -->
+        <div class="quote-banner">
+            <p class="quote-text">
+                "Itulah mengapa cinta dikatakan jatuh, karena ia datang saat kita tak sempat lagi bersiap..."
+            </p>
+        </div>
+
+        <!-- Tilted Polaroid Memories Gallery (Each Photo Tilted with Individual Messages) -->
+        <div class="gallery-feed">
+
+            <!-- Photo 1 -->
+            <div class="polaroid-card">
+                <img src="https://ganga--link--ghhzdp9sv8hk.code.run/i/8vm5hv42.jpg" class="polaroid-media" alt="Foto Seza 1">
+                <div class="polaroid-caption">
+                    <p class="caption-text">
+                        "selamatt ulangg tahunn sayanggkuu selamatt bertambahh usiaa yaa"
+                    </p>
+                </div>
+            </div>
+
+            <!-- Photo 2 -->
+            <div class="polaroid-card">
+                <img src="https://ganga--link--ghhzdp9sv8hk.code.run/i/bdi0h7tg.jpg" class="polaroid-media" alt="Foto Seza 2">
+                <div class="polaroid-caption">
+                    <p class="caption-text">
+                        "semogaa dengann bertambahnyaa usiaa kamuu makinn rajinn makinn pinterr dann selaluu menjagaa shalatt kamuu yaa"
+                    </p>
+                </div>
+            </div>
+
+            <!-- Photo 3 -->
+            <div class="polaroid-card">
+                <img src="https://ganga--link--ghhzdp9sv8hk.code.run/i/oizhk1f1.jpg" class="polaroid-media" alt="Foto Seza 3">
+                <div class="polaroid-caption">
+                    <p class="caption-text">
+                        "jangann lupaa jugaa jagaa polaa makann jangann sukaa begadangg dann mainn hp terlaluu lamaa"
+                    </p>
+                </div>
+            </div>
+
+            <!-- Photo 4 -->
+            <div class="polaroid-card">
+                <img src="https://ganga--link--ghhzdp9sv8hk.code.run/i/i70hlyq4.jpg" class="polaroid-media" alt="Foto Seza 4">
+                <div class="polaroid-caption">
+                    <p class="caption-text">
+                        "andd semogaa kamuu selaluu diberii lindungann olehh ALLAH SWT aamiin, dilimpahkann jugaa rezekinyaa"
+                    </p>
+                </div>
+            </div>
+
+            <!-- Photo 5 -->
+            <div class="polaroid-card">
+                <img src="https://ganga--link--ghhzdp9sv8hk.code.run/i/gcao3omt.jpg" class="polaroid-media" alt="Foto Seza 5">
+                <div class="polaroid-caption">
+                    <p class="caption-text">
+                        "dann selaluu sayangg samaa akuu selaluu ingett akuu dimanapunj kamuu beradaa jangann cumaa nambahh usiaa yaa tingginyaa jugaa haruss nambahh wkwkwkwkwkwk"
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Video Showcase Feed -->
+        <div class="video-feed">
+            <!-- Video 1 -->
+            <div class="video-card">
+                <div class="video-title">🎥 Someday Pleasure</div>
+                <video class="video-element" controls playsinline>
+                    <source src="https://ganga--link--ghhzdp9sv8hk.code.run/i/ahh5pivf.mp4" type="video/mp4">
+                    Browser kamu tidak mendukung pemutaran video.
+                </video>
+            </div>
+
+            <!-- Video 2 (Video Ucapan Langsung dari Mas Adnan) -->
+            <div class="video-card">
+                <div class="video-title">🎥 Video Ucapan Langsung dari Mas❤️</div>
+                <video class="video-element" controls playsinline poster="https://ganga--link--ghhzdp9sv8hk.code.run/i/8vm5hv42.jpg">
+                    <source src="https://ganga--link--ghhzdp9sv8hk.code.run/i/gwfqky9v.mp4" type="video/mp4">
+                    Browser kamu tidak mendukung pemutaran video.
+                </video>
+            </div>
+        </div>
+
+        <!-- Final Message Banner -->
+        <div class="final-message-box">
+            <p class="final-message-text">
+                semangatt teruss pokokee njalaninn hidupp diduniaa inii yaa, Mas selaluu adaa disampingg kamuu semangatt sayanggkuu, makasii jugaa sudaa mauu nerimaa Mas apaa adanyaa yaa semogaa kamuu gabakalann berpalingg darii mams mwahh ✨<br><br>
+                happyy birthdayy sayangggkuu cintakuu semestakuu bocilkuu mwahh mwahh 🤍🤍<br><br>
+                hidupp lebihh lamaa yaaa wanitaa kecilkuuuu 🤍🤍
+            </p>
+        </div>
+
+        <!-- Watermark Branding -->
+        <footer class="watermark">
+            Website by <strong>Niellxynn.id</strong><br>
+            Ingin buat jasa ucapan website seperti ini? Yuk DM kami lewat email 📧 <a href="mailto:danielrafaelwgn@gmail.com">danielrafaelwgn@gmail.com</a>
+        </footer>
+
+    </div>
+
+    <!-- FLOATING SPOTIFY PLAYER (Selalu Mengikuti Layar) -->
+    <div class="floating-spotify-card" id="floatingPlayer">
+        <img src="https://ganga--link--ghhzdp9sv8hk.code.run/i/8vm5hv42.jpg" alt="Album Cover Seza" class="spotify-album-cover" id="albumCover">
+        <div class="spotify-info">
+            <div class="spotify-track-name" id="trackTitle">Someday Pleasure</div>
+            <div class="spotify-artist">Untuk Seza Novarini 🤍</div>
+        </div>
+        <div class="spotify-controls-right">
+            <select class="playlist-select" id="musicSelector" onchange="switchTrack(this.value)">
+                <option value="1">🎵 Someday Pleasure</option>
+                <option value="2">🎵 The Bhone</option>
+                <option value="3">🎵 Anugerah Terindah</option>
+            </select>
+            <button class="play-btn-circle" id="masterPlayBtn" onclick="togglePlay()">⏸</button>
+        </div>
+    </div>
+
+    <!-- JavaScript Interactions -->
+    <script>
+        // Floating Particles Generator
+        function createHearts() {
+            const container = id('heartsContainer');
+            const heartChars = ['🤍', '✨', '❄️', '⭐', '💕'];
+            for(let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart-particle';
+                heart.innerText = heartChars[Math.floor(Math.random() * heartChars.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = (Math.random() * 5 + 6) + 's';
+                heart.style.animationDelay = (Math.random() * 5) + 's';
+                heart.style.fontSize = (Math.random() * 12 + 14) + 'px';
+                container.appendChild(heart);
+            }
+        }
+        createHearts();
+
+        function id(name) { return document.getElementById(name); }
+
+        // Pin Digit Inputs Handling
+        const pinInputs = document.querySelectorAll('.pin-digit');
+        pinInputs.forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length === 1 && index < pinInputs.length - 1) {
+                    pinInputs[index + 1].focus();
+                }
+            });
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                    pinInputs[index - 1].focus();
+                }
+            });
+        });
+
+        function checkPasscode() {
+            let entered = '';
+            pinInputs.forEach(i => entered += i.value);
+            if (entered === '123') {
+                id('passcodeScreen').classList.add('hidden');
+                id('welcomeScreen').classList.remove('hidden');
+            } else {
+                alert('Password salah, coba lagi yaa! ✨');
+                pinInputs.forEach(i => i.value = '');
+                pinInputs[0].focus();
+            }
+        }
+
+        function showClue() {
+            alert('Clue: Angka berurutan 12...');
+        }
+
+        // Countdown Sequence (1 - 2 - 3)
+        function startCountdownSequence() {
+            id('welcomeScreen').classList.add('hidden');
+            id('countdownScreen').classList.remove('hidden');
+            
+            const numElem = id('countdownNumber');
+            let count = 1;
+            numElem.innerText = count;
+
+            const interval = setInterval(() => {
+                count++;
+                if (count <= 3) {
+                    numElem.innerText = count;
+                } else {
+                    clearInterval(interval);
+                    id('countdownScreen').classList.add('hidden');
+                    showMainWebsiteContent();
+                }
+            }, 1000);
+        }
+
+        // Spotify Audio State Manager
+        let currentTrackId = '1';
+        let isPlaying = false;
+
+        function getAudioElem(trackId) {
+            return id('audio' + trackId);
+        }
+
+        function showMainWebsiteContent() {
+            id('mainContent').classList.add('visible');
+            // Auto play track 1 when entering main view
+            playTrack('1');
+
+            // Trigger Confetti Celebration
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            }
+        }
+
+        function playTrack(trackId) {
+            // Stop all audio players
+            ['1', '2', '3'].forEach(t => {
+                const a = getAudioElem(t);
+                a.pause();
+                a.currentTime = 0;
+            });
+
+            currentTrackId = trackId;
+            const activeAudio = getAudioElem(trackId);
+            activeAudio.play().then(() => {
+                isPlaying = true;
+                updatePlayerUI();
+            }).catch(e => {
+                console.log("Audio play blocked by browser:", e);
+                isPlaying = false;
+                updatePlayerUI();
+            });
+        }
+
+        function togglePlay() {
+            const activeAudio = getAudioElem(currentTrackId);
+            if (isPlaying) {
+                activeAudio.pause();
+                isPlaying = false;
+            } else {
+                activeAudio.play();
+                isPlaying = true;
+            }
+            updatePlayerUI();
+        }
+
+        function switchTrack(trackId) {
+            playTrack(trackId);
+            const trackTitles = {
+                '1': 'Someday Pleasure',
+                '2': 'The Bhone',
+                '3': 'Anugerah Terindah'
+            };
+            id('trackTitle').innerText = trackTitles[trackId];
+        }
+
+        function updatePlayerUI() {
+            const playBtn = id('masterPlayBtn');
+            const albumCover = id('albumCover');
+            
+            if (isPlaying) {
+                playBtn.innerText = '⏸';
+                albumCover.classList.add('playing');
+            } else {
+                playBtn.innerText = '▶';
+                albumCover.classList.remove('playing');
+            }
+        }
+    </script>
+</body>
+</html>
